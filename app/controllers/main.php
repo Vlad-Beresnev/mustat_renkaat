@@ -1,5 +1,5 @@
 <?php
-include 'database_connection.php';
+include '../models/database_connection.php';
 
 function getTiresBySize($size) {
     $conn = connect();
