@@ -1,7 +1,7 @@
 <?php
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'taitaja2021');
-define('DB_PASSWORD', "rF@HBQY@E7Dpyy[");
+define('DB_PASSWORD', "Ym0_hbeX9efEB82M");
 define('DB_NAME', 'mustat_renkaat_db');
 
 function connect() {
@@ -11,4 +11,16 @@ function connect() {
     }
     return $conn;
 }
+
+
+$conn = connect();
+
+if ($conn) {
+    echo "Connected successfully";
+} else {
+    echo "Connection failed: " . mysqli_connect_error();
+}
+
+mysqli_close($conn);
+
 ?>
