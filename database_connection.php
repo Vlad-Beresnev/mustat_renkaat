@@ -12,15 +12,3 @@ function connect() {
     return $conn;
 }
 
-
-$conn = connect();
-
-if ($conn) {
-    echo "Connected successfully";
-} else {
-    echo "Connection failed: " . mysqli_connect_error();
-}
-
-mysqli_close($conn);
-
-?>
