@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tire Search</title>
+    <link rel="stylesheet" href="./main.css"/>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo_dark.png" alt="logo dark"/>
+        </div>
+        <div class="links-container">
+            <ul>
+                <li><a href="#">Meista</a></li>
+                <li><a href="#">Yhteistiedot</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="search-container">
+        <h3>Tire Search</h3>
+        <input type="text" id="search" name="search" placeholder="Search.."/>
+        <button id="filter-button" type="button">Filter</button>
+        <div id="filter-container">
+            <form action="./main.php" method="post">
+                <div class="filter">
+                    <input type="text" id="size" name="size" placeholder="Size"><br>
+                </div>
+                <div class="filter">
+                    <input type="text" id="brand" name="brand" placeholder="Brand"><br>
+                </div>
+                <div class="filter">
+                    <input type="text" id="type" name="type" placeholder="Type"><br>
+                </div>
+                <div class="filter">
+                    <input type="number" id="min_price" name="min_price" min="0" placeholder="Min Price"><br>
+                </div>
+                <div class="filter">
+                    <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price"><br>
+                </div>  
+                <input class="filter" id="submit-search" type="submit" value="Search">
+            </form>
+        </div>
+    </div>
+    <div class="tires-container">
+        
+    </div>
+    <script src="./main.js"></script>
+</body>
+</html>
