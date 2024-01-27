@@ -1,54 +1,22 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tire Search</title>
-    <link rel="stylesheet" href="./main.css"/>
-</head>
-<body>
-    <header>
-        <div class="logo-container>">
-            <img src="images/logo_dark.png" alt="logo dark"/>
-        </div>
-        <ul>
-            <li><a href="#">Meista</a></li>
-            <li><a href="#">Yhteystiedot</a></li>
-        </ul>
-    </header>
-    <div class="search-container">
-        <h1>Tire Search</h1>
-        <button type="button" id="filter-button">Filter</button>
-        <input type="text" id="search" name="search" placeholder="Search.."/>
-        <form action="./main.php" method="post">
-            <div class="form-container">
-                <div class="filter">
-                    <label for="size">Size:</label><br>
-                    <input type="text" id="size" name="size"><br>
-                </div>
-                <div class="filter">
-                    <label for="brand">Brand:</label><br>
-                    <input type="text" id="brand" name="brand"><br>
-                </div>
-                <div class="filter">
-                    <label for="type">Type:</label><br>
-                    <input type="text" id="type" name="type"><br>
-                </div>
-                <div class="filter">
-                    <label for="min_price">Min Price:</label><br>
-                    <input type="number" id="min_price" name="min_price" min="0"><br>
-                </div>
-                <div class="filter">
-                    <label for="max_price">Max Price:</label><br>
-                    <input type="number" id="max_price" name="max_price" min="0"><br>
-                </div>  
-            </div>
-        <input id="submit-search" type="submit" value="Search">
-        </form>
-    </div>
-</body>
-</html>
+
 
 <?php
 include './database_connection.php';
+
+function getTires() {
+    $conn = connect();
+    $sql = "SELECT * FROM tires";
+    if($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $tires = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $tires;
+    }
+    mysqli_close($conn);
+    return null;
+}
 
 function getTiresBySize($size) {
     $conn = connect();
@@ -122,37 +90,139 @@ $min_price = $_POST['min_price'];
 $max_price = $_POST['max_price'];
 
 //Call the function with a specific size
+if (empty($size) && empty($brand) && empty($type) && empty($min_price) && empty($max_price)) {
+    $tires = getTires();
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
+}
+
+
 if (!empty($size)) {
-    $tiresBySize = getTiresBySize($size);
-    echo '<pre>';
-    print_r($tiresBySize);
-    echo '</pre>';
+    $tires = getTiresBySize($size);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
 }
 
 if (!empty($brand)) {
-    $tiresByBrand = getTiresByBrand($brand);
-    echo '<pre>';
-    print_r($tiresByBrand);
-    echo '</pre>';
+    $tires = getTiresByBrand($brand);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
 }
 
 if (!empty($type)) {
-    $tiresByType = getTiresByType($type);
-    echo '<pre>';
-    print_r($tiresByType);
-    echo '</pre>';
+    $tires = getTiresByType($type);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
 }
 
 if (!empty($min_price)) {
-    $tiresByPrice = getTiresByPrice($min_price, $max_price);
-    echo '<pre>';
-    print_r($tiresByPrice);
-    echo '</pre>';
+    $tires = getTiresByPrice($min_price, $max_price);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
 }
 
 if (!empty($max_price)) {
-    $tiresByPrice = getTiresByPrice($min_price, $max_price);
-    echo '<pre>';
-    print_r($tiresByPrice);
-    echo '</pre>';
+    $tires = getTiresByPrice($min_price, $max_price);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
 }
+
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tire Search</title>
+    <link rel="stylesheet" href="./main.css"/>
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="images/logo_dark.png" alt="logo dark"/>
+        </div>
+        <div class="links-container">
+            <ul>
+                <li><a href="#">Meista</a></li>
+                <li><a href="#">Yhteistiedot</a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="search-container">
+        <h3>Tire Search</h3>
+        <input type="text" id="search" name="search" placeholder="Search.."/>
+        <button id="filter-button" type="button">Filter</button>
+        <div id="filter-container">
+            <form action="./main.php" method="post">
+                <div class="filter">
+                    <input type="text" id="size" name="size" placeholder="Size"><br>
+                </div>
+                <div class="filter">
+                    <input type="text" id="brand" name="brand" placeholder="Brand"><br>
+                </div>
+                <div class="filter">
+                    <input type="text" id="type" name="type" placeholder="Type"><br>
+                </div>
+                <div class="filter">
+                    <input type="number" id="min_price" name="min_price" min="0" placeholder="Min Price"><br>
+                </div>
+                <div class="filter">
+                    <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price"><br>
+                </div>  
+                <input class="filter" id="submit-search" type="submit" value="Search">
+            </form>
+        </div>
+    </div>
+    <div class="tires-container">
+       <?php echo $tireCards; ?>
+    </div>
+    <script src="./main.js"></script>
+</body>
+</html>
