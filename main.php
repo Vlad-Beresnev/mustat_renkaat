@@ -83,11 +83,12 @@ function getTiresByPrice($min_price, $max_price) {
 
 }
 
-$size = $_POST['size'];
-$brand = $_POST['brand'];
-$type = $_POST['type'];
-$min_price = $_POST['min_price'];
-$max_price = $_POST['max_price'];
+
+$size = isset($_POST['size']) ? $_POST['size'] : null;
+$brand = isset($_POST['brand']) ? $_POST['brand'] : null;
+$type = isset($_POST['type']) ? $_POST['type'] : null;
+$min_price = isset($_POST['min_price']) ? $_POST['min_price'] : null;
+$max_price = isset($_POST['max_price']) ? $_POST['max_price'] : null;
 
 //Call the function with a specific size
 if (empty($size) && empty($brand) && empty($type) && empty($min_price) && empty($max_price)) {
