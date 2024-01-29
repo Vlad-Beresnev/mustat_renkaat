@@ -66,6 +66,24 @@ function getTiresByType($type) {
     return null;
 }
 
+function getTiresBySearch($searchTerm) {
+    $conn = connect();
+    $searchTerm = $conn->real_escape_string($searchTerm);
+    $searchTerm = '%' . $searchTerm . '%';
+    $sql = "SELECT * FROM tires WHERE brand LIKE ? OR size LIKE ? OR type LIKE ?";
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_bind_param($stmt, "sss", $searchTerm, $searchTerm, $searchTerm);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $tires = mysqli_fetch_all($result, MYSQLI_ASSOC);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $tires;
+    }
+    mysqli_close($conn);
+    return null;
+}
+
 function getTiresByPrice($min_price, $max_price) {
     $conn = connect();
     $sql = "SELECT * FROM tires WHERE price >= ? AND price <= ?";
@@ -89,6 +107,8 @@ $brand = isset($_POST['brand']) ? $_POST['brand'] : null;
 $type = isset($_POST['type']) ? $_POST['type'] : null;
 $min_price = isset($_POST['min_price']) ? $_POST['min_price'] : null;
 $max_price = isset($_POST['max_price']) ? $_POST['max_price'] : null;
+$image = isset($POST['image']) ? $POST['image'] : null;
+$searchTerm = isset($_POST['search']) ? $_POST['search'] : null;
 
 //Call the function with a specific size
 if (empty($size) && empty($brand) && empty($type) && empty($min_price) && empty($max_price)) {
@@ -96,10 +116,15 @@ if (empty($size) && empty($brand) && empty($type) && empty($min_price) && empty(
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -111,10 +136,15 @@ if (!empty($size)) {
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -125,10 +155,15 @@ if (!empty($brand)) {
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -139,10 +174,15 @@ if (!empty($type)) {
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -153,10 +193,15 @@ if (!empty($min_price)) {
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -167,10 +212,34 @@ if (!empty($max_price)) {
     ob_start();
     foreach ($tires as $tire) {
         echo '<div class="card">';
+        echo '<div class="card-info">';
         echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
         echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
         echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
         echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
+        echo '</div>';
+    }
+    $tireCards = ob_get_clean();
+}
+
+if (!empty($searchTerm)) {
+    $tires = getTiresBySearch($searchTerm);
+    ob_start();
+    foreach ($tires as $tire) {
+        echo '<div class="card">';
+        echo '<div class="card-info">';
+        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+        echo '</div>';
+        echo '<div class="card-image">';
+        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+        echo '</div>';
         echo '</div>';
     }
     $tireCards = ob_get_clean();
@@ -198,10 +267,13 @@ if (!empty($max_price)) {
     </header>
     <div class="search-container">
         <h3>Tire Search</h3>
-        <input type="text" id="search" name="search" placeholder="Search.."/>
+        <form class="search-form" action="./main.php" method="post">
+            <input type="text" id="search" name="search" placeholder="Search.."/>
+            <input  id="submit-search" class="submit-search" type="submit" value="Search">
+        </form>
         <button id="filter-button" type="button">Filter</button>
         <div id="filter-container">
-            <form action="./main.php" method="post">
+            <form class="filter-form" action="./main.php" method="post">
                 <div class="filter">
                     <input type="text" id="size" name="size" placeholder="Size"><br>
                 </div>
@@ -216,13 +288,38 @@ if (!empty($max_price)) {
                 </div>
                 <div class="filter">
                     <input type="number" id="max_price" name="max_price" min="0" placeholder="Max Price"><br>
-                </div>  
-                <input class="filter" id="submit-search" type="submit" value="Search">
+                </div>
+                <input id="submit-filter" class="submit-search" type="submit" value="Search">
             </form>
         </div>
     </div>
     <div class="tires-container">
        <?php echo $tireCards; ?>
+    </div>
+    <footer class="footer">
+        <div class="footer-info">
+            <h3>
+                LOGO
+            </h3>
+            <div class="info-links">    
+                <p>Osoite</p>
+                <p>Puhelinnumero</p>
+                <p>Sähköposti</p>
+            </div>
+        </div>
+        <div class="footer-contact">
+            <h3>Ota yhteyttä</h3>
+            <form class="contact-form">
+                <input type="text" placeholder="etu ja sukunimi">
+                <input type="tel" placeholder="puhelinnumero">
+                <input type="email" placeholder="sähköposti">
+                <textarea placeholder="viesti"></textarea>
+                <button type="submit">Lähetä</button>
+            </form>
+        </div>
+    </footer>
+    <div class="footer-bottom">
+        <p>Taitaja © 2022</p>
     </div>
     <script src="./main.js"></script>
 </body>
