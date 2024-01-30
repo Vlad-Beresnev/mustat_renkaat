@@ -75,6 +75,11 @@ function getTiresBySearch($searchTerm) {
         mysqli_stmt_bind_param($stmt, "sss", $searchTerm, $searchTerm, $searchTerm);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
+        if (mysqli_num_rows($result) === 0) {
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
+            return "Search result is not found";
+        }
         $tires = mysqli_fetch_all($result, MYSQLI_ASSOC);
         mysqli_stmt_close($stmt);
         mysqli_close($conn);
@@ -228,21 +233,25 @@ if (!empty($max_price)) {
 
 if (!empty($searchTerm)) {
     $tires = getTiresBySearch($searchTerm);
-    ob_start();
-    foreach ($tires as $tire) {
-        echo '<div class="card">';
-        echo '<div class="card-info">';
-        echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
-        echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
-        echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
-        echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
-        echo '</div>';
-        echo '<div class="card-image">';
-        echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
-        echo '</div>';
-        echo '</div>';
+    if (!is_array($tires)) {
+        echo "<div class='tires-container'><h1>$tires</h1></div>";
+        $tiresCards = ob_get_clean();
+    } else {
+        foreach ($tires as $tire) {
+            echo '<div class="card">';
+            echo '<div class="card-info">';
+            echo '<h2>' . htmlspecialchars($tire['brand']) . '</h2>';
+            echo '<p>Size: ' . htmlspecialchars($tire['size']) . '</p>';
+            echo '<p>Type: ' . htmlspecialchars($tire['type']) . '</p>';
+            echo '<p>Price: ' . htmlspecialchars($tire['price']) . '</p>';
+            echo '</div>';
+            echo '<div class="card-image">';
+            echo '<img src="' . htmlspecialchars($tire['image']) . '" alt="Tire Image">';
+            echo '</div>';
+            echo '</div>';
+        }
+        $tireCards = ob_get_clean();
     }
-    $tireCards = ob_get_clean();
 }
 
 ?>
@@ -256,11 +265,11 @@ if (!empty($searchTerm)) {
 <body>
     <header>
         <div class="logo-container">
-            <img src="images/logo_dark.png" alt="logo dark"/>
+            <a href="./main.php"><img src="images/logo_dark.png" alt="logo dark"/></a>
         </div>
         <div class="links-container">
             <ul>
-                <li><a href="#">Meista</a></li>
+                <li><a href="./about.php">Meista</a></li>
                 <li><a href="#">Yhteistiedot</a></li>
             </ul>
         </div>
