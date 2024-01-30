@@ -233,6 +233,7 @@ if (!empty($max_price)) {
 
 if (!empty($searchTerm)) {
     $tires = getTiresBySearch($searchTerm);
+    ob_start();
     if (!is_array($tires)) {
         echo "<div class='tires-container'><h1>$tires</h1></div>";
         $tiresCards = ob_get_clean();
@@ -254,6 +255,55 @@ if (!empty($searchTerm)) {
     }
 }
 
+function getPromotion($promotionType) {
+    $conn = connect();
+    $sql = "SELECT * FROM seasonalpromotions WHERE title = ?";
+    if ($stmt = mysqli_prepare($conn, $sql)) {
+        mysqli_stmt_bind_param($stmt, "s", $promotionType);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $promotion = mysqli_fetch_assoc($result);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return $promotion;
+    }
+    mysqli_close($conn);
+    return null;
+}
+
+$summerPromotion = getPromotion("Summer Tires");
+$winterPromotion = getPromotion("Winter Tires");
+
+ob_start();
+echo '<div class="summerPromotion-container">';
+echo '<h3>' . htmlspecialchars($summerPromotion['title']) . '</h2>';
+echo '<p>' . htmlspecialchars($summerPromotion['description']) . '</p>';
+echo '<img src="' . htmlspecialchars($summerPromotion['image']) . '" alt="Promotion Image">';
+echo '</div>';
+$summerPromotionData = ob_clean();
+
+
+ob_start();
+echo '<div class="winterPromotion-container">';
+echo '<h3>' . htmlspecialchars($winterPromotion['title']) . '</h2>';
+echo '<p>' . htmlspecialchars($winterPromotion['description']) . '</p>';
+echo '<img src="' . htmlspecialchars($summerPromotion['image']) . '" alt="Promotion Image">';
+echo '</div>';
+$winterPromotionData = ob_clean();
+
+
+$summerPromotionContainer = '<div class="summerPromotion-container">';
+$summerPromotionContainer .= '<h3>' . htmlspecialchars($summerPromotion['title']) . '</h3>';
+$summerPromotionContainer .= '<p>' . htmlspecialchars($summerPromotion['description']) . '</p>';
+$summerPromotionContainer .= '<img src="' . htmlspecialchars($summerPromotion['image_path']) . '" alt="Promotion Image">';
+$summerPromotionContainer .= '</div>';
+
+$winterPromotionContainer = '<div class="winterPromotion-container">';
+$winterPromotionContainer .= '<h3>' . htmlspecialchars($winterPromotion['title']) . '</h3>';
+$winterPromotionContainer .= '<p>' . htmlspecialchars($winterPromotion['description']) . '</p>';
+$winterPromotionContainer .= '<img src="' . htmlspecialchars($winterPromotion['image_path']) . '" alt="Promotion Image">';
+$winterPromotionContainer .= '</div>';
+
 ?>
 
 <!DOCTYPE html>
@@ -270,10 +320,14 @@ if (!empty($searchTerm)) {
         <div class="links-container">
             <ul>
                 <li><a href="./about.php">Meista</a></li>
-                <li><a href="#">Yhteistiedot</a></li>
+                <li><a href="#buttom">Yhteistiedot</a></li>
             </ul>
         </div>
     </header>
+    <div class="promotions-container">
+        <?php echo $summerPromotionContainer; ?>
+        <?php echo $winterPromotionContainer; ?>
+    </div>
     <div class="search-container">
         <h3>Tire Search</h3>
         <form class="search-form" action="./main.php" method="post">
@@ -305,7 +359,7 @@ if (!empty($searchTerm)) {
     <div class="tires-container">
        <?php echo $tireCards; ?>
     </div>
-    <footer class="footer">
+    <footer id="buttom" class="footer">
         <div class="footer-info">
             <h3>
                 LOGO

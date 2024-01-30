@@ -62,11 +62,48 @@ header li a {
     }
 }
 
+.promotions-container {
+    margin-top: 100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    justify-content: center;
+}
+
+.summerPromotion-container, .winterPromotion-container {
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 500px;
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease;
+    justify-content: space-between;
+}
+
+.summerPromotion-container h3, .winterPromotion-container h3 {
+    margin-bottom: -5px;
+}
+
+.summerPromotion-container img, .winterPromotion-container img {
+    display: block;
+    margin: auto;
+    width: 400px;
+    border-radius: 10px;
+}
+
+.summerPromotion-container:hover, .winterPromotion-container:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
 /* Search Container */
 
 .search-container {
-    margin-top: 250px;
-    margin-bottom: 150px;
+    margin-top: 100px;
+    margin-bottom: 130px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -134,7 +171,7 @@ header li a {
 }
 
 #filter-container {
-    position: relative;
+    position: absolute;
     z-index: 5;
     color: #f2f2f2;
     background-color: #023059;
@@ -147,7 +184,8 @@ header li a {
     transform: translate(-50%, -50%);
     display: none;
     padding: 5px;
-    top: 50px;
+    margin-top: 350px;
+    /* top: 50px; */
 }
 
 .filter-form {
@@ -322,6 +360,14 @@ input[type="number"]::-webkit-outer-spin-button {
     .card {
         width: 300px;
     }
+
+    .summerPromotion-container, .winterPromotion-container {
+        width: 300px;
+    }
+
+    .summerPromotion-container img, .winterPromotion-container img {
+        width: 250px;
+    }
 }
 
 
@@ -353,6 +399,11 @@ input[type="number"]::-webkit-outer-spin-button {
     .tires-container {
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
+    }
+
+    .promotions-container {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    
     }
 }
 

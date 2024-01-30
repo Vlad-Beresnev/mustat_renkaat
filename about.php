@@ -13,12 +13,12 @@
         <div class="links-container">
             <ul>
                 <li><a href="./about.php">Meista</a></li>
-                <li><a href="#">Yhteistiedot</a></li>
+                <li><a href="#bottom">Yhteistiedot</a></li>
             </ul>
         </div>
     </header>
     <div class="youtube-container">
-    
+        <iframe width="420" height="315" src="https://www.youtube.com/embed/jcam5ktPT4E?autoplay=1&mute=1"></iframe>
     </div>
     <div class="about-container">
         <h1>Meistä</h1>
@@ -63,6 +63,32 @@
             kaikissa rengastarpeissasi. Turvallisia
             kilometrejä toivottaen, Mustat Renkaat -tiimi.
         </p>
+    </div>
+    
+    <footer id="bottom" class="footer">
+        <div class="footer-info">
+            <h3>
+                LOGO
+            </h3>
+            <div class="info-links">    
+                <p>Osoite</p>
+                <p>Puhelinnumero</p>
+                <p>Sähköposti</p>
+            </div>
+        </div>
+        <div class="footer-contact">
+            <h3>Ota yhteyttä</h3>
+            <form class="contact-form">
+                <input type="text" placeholder="etu ja sukunimi">
+                <input type="tel" placeholder="puhelinnumero">
+                <input type="email" placeholder="sähköposti">
+                <textarea placeholder="viesti"></textarea>
+                <button type="submit">Lähetä</button>
+            </form>
+        </div>
+    </footer>
+    <div class="footer-bottom">
+        <p>Taitaja © 2022</p>
     </div>
 </body>
 </html>
